@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun&family=Sriracha&display=swap" rel="stylesheet">
+
+    <style>
+      .full{
+        position: fixed;
+        top: 0vw;
+        left: 0vw;
+        width: 100vw;
+        height: 100vh;
+      }
+      #svg1{
+        background-color: #fff9f0;        
+        margin: 0px;
+      }
+      #g1{
+        cursor: pointer;
+      }
+      
+      #messageBck{
+        display: none;
+        background-color: #403733;
+        opacity: 0.45;        
+      }
+      .center{
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+      }
+      #messageDiv{
+        display: none;
+        
+      }      
+      #messageBox{ 
+        margin: auto;
+        margin-top: 12vh;
+        width: 70vw;
+        height: 55vh;
+        background-color: #fffbf2;
+        border-style: solid;
+        border-color: #f0e7dd;
+        border-width: 4px;
+        border-radius: 8px;                
+      }
+      @media only screen and (min-width: 600px) {
+        #messageBox{
+          width: 500px;
+        }
+      }
+      #message{
+        margin: 18px;
+      }
+      .text1{
+        font-family: 'Sriracha', cursive;
+      }
+      #closeBtn{
+        border: none;        
+        border-radius: 5px;
+        background-color: #444444;        
+        padding:12px 28px;
+        text-align: center;
+        color: #ffffff;
+        font-size: 20px;        
+        text-decoration: none;
+        cursor: pointer;
+        
+        position: relative;
+        top: -35px;
+      }
+      #closeBtn:hover {
+        background-color: #333333;        
+      }
+      
+      #footDiv{
+        position: fixed;      
+        bottom: 0;
+        width: 100vw;
+        padding-bottom: 25px;
+        pointer-events: none;
+      }
+      #btn2{
+        border: none;        
+        border-radius: 25px;
+        background-color: #5a5263;        
+        padding:12px 22px;
+        text-align: center;
+        color: #ffffff;
+        font-size: 16px;        
+        text-decoration: none;
+        cursor: pointer;
+        margin: 10px;
+        pointer-events: all;
+      }
+      #btn2:hover {
+        background-color: #453f4d;        
+      }
+      #btn3{
+        border: none;        
+        border-radius: 25px;
+        background-color: #8c5c5a;        
+        padding:12px 22px;
+        text-align: center;
+        color: #ffffff;
+        font-size: 16px;        
+        text-decoration: none;
+        cursor: pointer; 
+        margin: 10px;
+        pointer-events: all;
+      }
+      #btn3:hover {
+        background-color: #705554;        
+      }
+    </style>
+  </head>
+  <body>    
+
+    <svg id="svg1" class="full">
+      <defs>
+        <g id="g1">
+          <path fill="#ff7640" d="M402,525.44s43.88,41.64,81.93,49.14,116-14.38,133.42-15.6,66.5-3,66.5-3S596.29,508,595,472.89s25.59-41.76,50.19-53.88,43-37.09,43-37.09-32.14-1.65-42.83-13.59,14-46.45,25.44-71.17,29.73-73.23,29.73-73.23-78.27,49-111.48,59.38-68,30.43-90.44,12.67,4.34-82.16,15.09-104.39S548,129.2,548,129.2s-69.32,29.53-80.65,26-15.56-35.67-22.46-57.81-31.77-63-31.77-63-36.56,62.86-42.62,73.52-10.6,51.64-23.5,51.93S291.18,123,291.18,123s8.55,81.87,12.23,94.07,25.71,73.63,7.42,82.09S270.32,251,214.07,223.63s-98.85-39.78-98.85-39.78,43.1,112.46,44.35,135.76-57.35,24.72-57.35,24.72,141.14,84.85,129.71,104.12c-8.75,14.75-54.42,21.76-80,29.36S82.23,511,82.23,511,152.74,538.9,191.69,545s77.66,11.15,124,1.64,75.46-22.55,75.46-22.55-12.23,43.73-8.89,123.13,14.9,130,14.9,130l9-1.85S393,676.85,392.8,629.79,402,525.44,402,525.44Z" transform="scale(0.12) translate(-400 -400) "/>
+          <text text-anchor="middle" font-size="24" x="0" y="8.5" fill="#ffffff" text-decoration= "none"></text>
+        </g>
+      </defs>
+
+    </svg>
+    
+    <div id="messageBck" class="full"></div>
+    <div id="messageDiv" class="full" >
+      <div id="messageBox">
+        <h2></h2>
+        <p id="message" class="text1"></p>
+      </div><br>
+      <div class="center">
+        <button id="closeBtn">ตกลง</button>
+      </div>
+    </div>
+    
+    <div id="footDiv" class="center">
+      <button id="btn2" >ส่งคำอวยพร</button>
+      <button id="btn3" >นิทรรศการเสมือน</button>
+    </div>
+    
+    <script>
+      //---------------------------------------------------------------
+      const rad = Math.PI/180;
+      var q = (id) => document.getElementById(id)
+
+      function choose(choices) {
+        var index = Math.floor(Math.random() * choices.length);
+        return choices[index];
+      }
+
+      function randInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) ) + min;
+      }
+      
+      function randFloat(min = 0, max = 1, fractionDigits = 0, inclusive = true) {
+        const precision = Math.pow(10, Math.max(fractionDigits, 0));
+        const scaledMax = max * precision;
+        const scaledMin = min * precision;
+        const offset = inclusive ? 1 : 0;
+        const num = Math.floor(Math.random() * (scaledMax - scaledMin + offset)) + scaledMin;
+
+        return num / precision;
+      };
+
+      function reshape2d(array, part) {
+        var tmp = [];
+        for(var i = 0; i < array.length; i += part) {
+          tmp.push(array.slice(i, i + part));
+        }
+        return tmp;
+      }
+      
+      function relPos(x, arr){
+        let inArr = Array.from(arr);
+        inArr.sort(function(a, b){return a - b})
+        idx = inArr.indexOf(x);
+        pos = idx / (inArr.length-1);
+        return pos
+      }
+
+      //---Load Ajax-------------------------------------------
+      var contents = [];		
+      var blessText = [];
+      var sheetID = "1ZQpX2av3z8tXAcrv2bJb9EY_5NIjhcZxq-fWphvJshg";
+      var url = "https://spreadsheets.google.com/feeds/cells/1ZQpX2av3z8tXAcrv2bJb9EY_5NIjhcZxq-fWphvJshg/1/public/full?alt=json";
+      $.ajax({
+        url:url,
+        dataType:"json",
+        success:function(data) {
+          // data.feed.entry is an array of objects that represent each cell
+          X = data.feed.entry;				
+          //console.log(X);				
+          for(i=0;i<X.length;i++) {
+            contents.push( X[i].gs$cell.$t ); // get value of cells						
+          }												
+
+          afterLoad();
+        },
+      });
+
+      function afterLoad() {										
+        dimWidth = 3; // 3 columns of sheet file
+        contents = reshape2d(contents, dimWidth);
+        //console.log(contents);
+
+        blessText = []
+        for(row=1;row<contents.length;row++) {
+          let text = contents[row][1];
+          if(text.slice(0, 3)=='<->')
+            continue;
+          blessText.push(text);
+        }        
+        console.log(blessText)
+
+        for(text of blessText){          
+          leaves.push( new Leaf(text) );
+        }
+        
+        setInterval(function(){
+          for(leaf of leaves){
+            leaf.update(); 
+          }
+        }, 50);
+      }
+      //------------------------------------------------------------
+      var svgW = window.innerWidth;
+      var svgH = window.innerHeight;
+      window.onresize = function(){
+        svgW = window.innerWidth;
+        svgH = window.innerHeight;
+      }
+      
+      //---------------------------------------------------------------
+      leaves = [];
+      class Leaf{
+        constructor(text) {
+          this.text = text;
+          this.color = choose(colorList);
+          this.size = getSize_relativeToLength(this.text, blessText);          
+          this.el = createLeaf_g(this.text[0], this.color);
+          
+          this.x = randInt(0, svgW);
+          this.y = randInt(0, svgH);          
+                    
+          this.v = randFloat(0.2, 5, 1); //px per frame
+          this.direct = randInt(0, 359); // degree
+          this.vx = this.v*Math.cos(this.direct*rad);
+          this.vy = this.v*Math.sin(this.direct*rad);
+          
+          this.angle = randInt(0, 359);
+          this.angV = randFloat(-10, 10, 1); // deg per frame
+          
+          this.el.addEventListener('click', this.whenClick.bind(this));          
+        }
+        whenClick(){
+          q('message').innerHTML = this.text;
+          showMessage();          
+        }
+        update() {
+          this.el.setAttribute('transform', ' translate('+this.x+' '+this.y+') \
+                                              rotate('+this.angle+') scale('+this.size+')');
+          this.x += this.vx;
+          this.y += this.vy;
+          this.angle += this.angV;
+          
+          var angGap = 15;
+          if(this.x >= svgW){
+            this.direct = randInt(90+angGap, 270-angGap);
+            this.reRand();
+          }
+          else if(this.x <= 0){
+            this.direct = randInt(-90+angGap, 90-angGap);
+            this.reRand();
+          }
+          else if(this.y >= svgH){
+            this.direct = randInt(180+angGap, 360-angGap);
+            this.reRand();
+          }
+          else if(this.y <= 0){
+            this.direct = randInt(0+angGap, 180-angGap);
+            this.reRand();
+          }          
+        }
+        
+        reRand() {  
+          this.v = randFloat(0.2, 5, 1);
+          
+          this.vx = this.v*Math.cos(this.direct*rad);
+          this.vy = this.v*Math.sin(this.direct*rad);
+          
+          this.angV = randFloat(-10, 10, 1)
+        }
+      }
+      var colorList = ['#de9e66', '#cc735f', '#b37a46', '#ebc965', '#c4bc66', '#ff9e54', '#ff7640', '#c97465', '#f27544', '#f7b96d'];      
+
+      function createLeaf_g(text, color) {        
+        group = q("g1").cloneNode(true);
+        $('#svg1').append(group);
+        pathEl = group.children[0];        
+        textEl = group.children[1];
+        pathEl.style.fill = color;        
+        textEl.innerHTML = text
+        return group;
+      }      
+
+      var sizeList = [0.75, 0.8, 0.85, 0.9, 0.95, 1.0, 1.05, 1.1, 1.15, 1.2 ];
+      function getSize_relativeToLength(text, textArr){
+        lengList = [];
+        for(s of textArr){
+          lengList.push(s.length); 
+        }
+        relIdx = relPos(text.length, lengList);
+        Idx = Math.round(relIdx*(sizeList.length-1));
+        return sizeList[Idx];
+      }
+      
+      //-----------------------------------------------------------------------------
+      function hideMessage(){
+        $('#messageBck').hide();
+        $('#messageDiv').hide();
+      }
+      function showMessage(){
+        $('#messageBck').show();
+        $('#messageDiv').show();
+      }
+      q('closeBtn').addEventListener('click', hideMessage);
+      q('messageBck').addEventListener('click', hideMessage);
+      
+      q('btn2').onclick = function(){
+        document.location=gFormLink;
+      }
+      q('btn3').onclick = function(){
+        document.location=XhbtForm;
+      }
+        
+      gFormLink = 'https://forms.gle/xhw9SF1AnxnVsZaw8';
+      XhbtLink = 'https://www.artsteps.com/view/5f897a46f1961417edac085e';
+      XhbtForm = 'https://forms.gle/KXTaCjtSsbxoYCeW8';
+      //leaf1 = createLeaf_g('ง', '#ebc965');
+      //leaf1.setAttribute('transform', 'translate('+svgW+' '+svgH+') rotate(0) scale(1.2)');
+      
+      alert('คลิกใบไม้เพื่อดูคำอวยพร');
+    </script>
+  </body>
+</html>
